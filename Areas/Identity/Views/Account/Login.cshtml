@@ -1,0 +1,63 @@
+﻿@model E_Commerce.Models.ViewModel.LoginVM
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4 fw-bold text-primary">Welcome Back 👋</h2>
+                <p class="text-center text-muted mb-4">Please login to your account</p>
+
+                <form asp-action="Login">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" class="form-control form-control-lg rounded-pill" placeholder="Enter your email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold"></label>
+                        <input asp-for="Password" class="form-control form-control-lg rounded-pill" placeholder="Enter your password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        <label class="form-check-label" asp-for="RememberMe"></label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Extra Links -->
+                <div class="text-center mt-4">
+                    <p class="mb-1">
+                        <a href="#" class="text-decoration-none">Forgot your password?</a>
+                    </p>
+                    <p>
+                        Don’t have an account? <a asp-action="Register" class="fw-bold text-primary text-decoration-none">Register here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

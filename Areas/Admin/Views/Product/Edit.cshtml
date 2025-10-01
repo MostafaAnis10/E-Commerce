@@ -1,0 +1,90 @@
+﻿<div class="card shadow-lg border-0 rounded-3 mt-4">
+    <div class="card-body p-4">
+
+        <!-- العنوان -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="card-title fw-bold mb-0 text-primary">✦ Edit Product</h4>
+        </div>
+        
+
+        <!-- الفورم -->
+        <form action="/Admin/Product/Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <!-- Product Name -->
+            <div class="mb-3">
+                <label for="ProductName" class="form-label fw-semibold">Product Name</label>
+                <input type="text" class="form-control form-control-lg rounded-3 shadow-sm"
+                       id="ProductName" placeholder="Enter product name" name="Name" value="@Model.Name">
+            </div>
+
+            <!-- Product Description -->
+            <div class="mb-3">
+                <label for="ProductDescription" class="form-label fw-semibold">Product Description</label>
+                <input type="text" class="form-control form-control-lg rounded-3 shadow-sm"
+                       id="ProductDescription" placeholder="Enter product description" name="Description" value="@Model.Description">
+            </div>
+
+            <!-- Product Price -->
+            <div class="mb-3">
+                <label for="ProductPrice" class="form-label fw-semibold">Product Price</label>
+                <input type="number" step="0.01" class="form-control form-control-lg rounded-3 shadow-sm"
+                       id="ProductPrice" placeholder="Enter product price" name="Price" value="@Model.Price">
+            </div>
+
+            <!-- Product Image -->
+            <div class="mb-3">
+                <label for="ProductImg" class="form-label fw-semibold">Product Image</label>
+                <input type="file" class="form-control form-control-lg rounded-3 shadow-sm"
+                       id="ProductImg" name="file">
+            </div>
+
+            <!-- عرض الصورة القديمة تحت -->
+            @if (!string.IsNullOrEmpty(Model.Img))
+            {
+                <div class="mb-3">
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body p-2 text-center">
+                            <p class="fw-semibold text-muted small mb-2">Current Image</p>
+                            <img src="@Url.Content("~/Images/" + Model.Img)" alt="Current Product Image"
+                                 class="img-fluid rounded-3 shadow-sm border"
+                                 style="max-height: 200px; object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Product Discount -->
+            <div class="mb-3">
+                <label for="ProductDiscount" class="form-label fw-semibold">Product Discount (%)</label>
+                <input type="number" step="0.01" class="form-control form-control-lg rounded-3 shadow-sm"
+                       id="ProductDiscount" placeholder="Enter discount percentage" name="Discount" value="@Model.Discount">
+            </div>
+
+            <!-- Product Quantity -->
+            <div class="mb-3">
+                <label for="ProductQuantity" class="form-label fw-semibold">Product Quantity</label>
+                <input type="number" class="form-control form-control-lg rounded-3 shadow-sm"
+                       id="ProductQuantity" placeholder="Enter quantity in stock" name="Quantity" value="@Model.Quantity">
+            </div>
+
+            <!-- Product Category -->
+            <div class="mb-3">
+                <label for="CategoryId" class="form-label fw-semibold">Product Category</label>
+                <select class="form-select form-select-lg rounded-3 shadow-sm" id="CategoryId" name="CategoryId" value="@Model.CategoryId">
+                    <option selected disabled>-- Select Category --</option>
+                    @foreach (var item in ViewData["categories"] as List<Category>)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- الأزرار -->
+            <div class="d-flex justify-content-end">
+                <button type="reset" class="btn btn-outline-secondary me-2 px-4 py-2 rounded-3">Cancel</button>
+                <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm">Save</button>
+            </div>
+        </form>
+
+    </div>
+</div>

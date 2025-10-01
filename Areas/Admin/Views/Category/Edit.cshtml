@@ -1,0 +1,56 @@
+﻿@model Category
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit me-2"></i> Edit Category
+                    </h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-area="Admin" asp-controller="Category" asp-action="Edit" method="post">
+                        <!-- Hidden ID -->
+                        <input type="hidden" name="Id" value="@Model.Id" />
+
+                        <div class="mb-3">
+                            <label for="Name" class="form-label fw-semibold">Category Name</label>
+                            <input type="text" class="form-control form-control-lg shadow-sm"
+                                   id="Name" name="Name" value="@Model.Name" placeholder="Enter category name">
+                            <span class="text-danger" asp-validation-for="Name"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <a asp-area="Admin" asp-controller="Category" asp-action="Index"
+                               class="btn btn-outline-secondary me-2 px-4 py-2 rounded-3">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm">
+                                <i class="fas fa-save me-1"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right"
+        };
+
+        @if (TempData["notifaction"] != null)
+        {
+                <text>
+                    toastr.success('@TempData["notifaction"]');
+                </text>
+        }
+    </script>
+}

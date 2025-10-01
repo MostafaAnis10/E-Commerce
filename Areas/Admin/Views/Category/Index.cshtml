@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Category>
+
+<div class="container my-4">
+    <!-- Header -->
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h1 class="fw-bold text-primary">
+                <i class="fas fa-list-alt me-2"></i> All Categories
+            </h1>
+            <a class="btn btn-success shadow-sm d-flex align-items-center" href="/Admin/Category/Create">
+                <i class="fas fa-plus me-2"></i> Create New
+            </a>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive shadow-sm rounded">
+                @{
+                    // حساب البداية حسب الصفحة
+                    int pageSize = ViewBag.PageSize ?? 5;
+                    int counter = ((int)ViewBag.CurrentPage - 1) * pageSize;
+                }
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th scope="col" style="width: 10%;">#</th>
+                            <th scope="col" style="width: 60%;">Name</th>
+                            <th scope="col" style="width: 30%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            counter++;
+                            <tr>
+                                <th scope="row">@counter</th>
+                                <td class="fw-semibold">@item.Name</td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm me-2 shadow-sm" href="/Admin/Category/Edit?categoryId=@item.Id">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <button class="btn btn-danger btn-sm shadow-sm" onclick="confirmDelete(@item.Id)">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })">Previous</a>
+                    </li>
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })">Next</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- End Pagination -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right"
+        };
+
+        var notif = '@Context.Request.Cookies["notifaction"]';
+        if (notif) {
+            toastr.success(notif);
+        }
+
+        function confirmDelete(categoryId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/Admin/Category/Delete?categoryId=" + categoryId;
+                }
+            });
+        }
+    </script>
+}

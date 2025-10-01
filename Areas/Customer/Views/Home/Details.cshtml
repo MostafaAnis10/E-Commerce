@@ -1,0 +1,243 @@
+﻿<!-- Product section + Related products with styling -->
+<style>
+    /* 🔘 Button Style */
+    .btn-dark {
+        background: linear-gradient(90deg, #ffcc00, #ff9900);
+        border: none;
+        font-weight: bold;
+        transition: 0.3s ease;
+    }
+
+        .btn-dark:hover {
+            background: linear-gradient(90deg, #ff9900, #ff6600);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+    /* 🟦 Product Card */
+    .product-card {
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+        position: relative;
+    }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+    /* 🖼️ Product Image */
+    .product-img {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .product-img img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+    .product-card:hover .product-img img {
+        transform: scale(1.08);
+    }
+
+    /* 🎭 Overlay Buttons */
+    .overlay {
+        position: absolute;
+        bottom: -70px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.4s ease;
+        opacity: 0;
+    }
+
+    .product-card:hover .overlay {
+        bottom: 15px;
+        opacity: 1;
+    }
+
+    .overlay .btn {
+        border-radius: 25px;
+        padding: 6px 14px;
+        font-size: 13px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    /* 🏷️ Category Badge */
+    .category-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: linear-gradient(90deg, #007bff, #00c6ff);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 30px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    /* 📑 Product Info */
+    .product-info {
+        padding: 15px;
+    }
+
+        .product-info h5 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .product-info .stars {
+            color: #ffcc00;
+            font-size: 14px;
+        }
+
+        .product-info .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #28a745;
+            margin: 0;
+        }
+
+    /* Product Badge */
+    .badge-custom {
+        background: linear-gradient(90deg, #ff9900, #ff6600);
+        font-size: 0.85rem;
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 30px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Button Styling */
+    .btn-dark-custom {
+        background: linear-gradient(90deg, #ff9900, #ff6600);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 20px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-dark-custom:hover {
+            background: linear-gradient(90deg, #ff9900, #ff6600);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+        }
+</style>
+
+<!-- Product Section -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-5 align-items-center">
+            <!-- Product Image -->
+            <div class="col-md-6 text-center">
+                <img class="img-fluid rounded shadow-lg mb-4"
+                     src="~/Images/@Model.product.Img"
+                     alt="@Model.product.Name"
+                     style="max-height: 450px; object-fit: cover; border-radius: 20px;" />
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-md-6">
+                <span class="badge-custom mb-3">@Model.product.Category.Name</span>
+                <h1 class="display-5 fw-bold mb-3">@Model.product.Name</h1>
+
+                <div class="fs-4 mb-4">
+                    @if (Model.product.Discount > 0)
+                    {
+                        <span class="text-decoration-line-through text-muted me-2">
+                            @Model.product.Price.ToString("c")
+                        </span>
+                        <span class="fw-bold text-success">
+                            @( (Model.product.Price - (Model.product.Price * (decimal)Model.product.Discount / 100)).ToString("c") )
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="fw-bold text-success">@Model.product.Price.ToString("c")</span>
+                    }
+                </div>
+
+                <p class="lead text-secondary mb-4">@Model.product.Description</p>
+
+                <form action="/Customer/Cart/AddToCart">
+                    <div class="d-flex align-items-center gap-3">
+                        <input type="hidden" name="productId" value="@Model.product.Id" />
+                        <input class="form-control text-center" id="inputQuantity" type="number" name="count" value="1" min="1"
+                               style="max-width: 90px; border-radius: 12px;" />
+                        <button class="btn btn-dark-custom btn-lg shadow-sm d-flex align-items-center gap-2" type="submit">
+                            <i class="bi bi-cart-plus"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+
+                </form>
+                 </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Products Section -->
+<section class="py-5 bg-light border-top">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder text-center mb-5">✨ Related Products</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
+            @foreach (var item in Model.Related)
+            {
+                <div class="col">
+                    <div class="product-card">
+                        <!-- Product Image -->
+                        <div class="product-img">
+                            <img src="~/Images/@item.Img" alt="@item.Name" />
+                            <span class="badge category-badge">@item.Category.Name</span>
+                            <div class="overlay">
+                                <a href="/Customer/Home/Details?productId=@item.Id" class="btn btn-light btn-sm">
+                                    <i class="bi bi-eye"></i> Details
+                                </a>
+                                <a href="/Customer/Cart/AddToCart?productId=@item.Id" class="btn btn-dark btn-sm">
+                                    <i class="bi bi-cart-plus"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Product Info -->
+                        <div class="product-info text-center">
+                            <h5 class="fw-bold">@item.Name</h5>
+                            <div class="stars mb-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div class="fs-5">
+                                @if (item.Discount > 0)
+                                {
+                                    <span class="text-decoration-line-through text-muted me-2">
+                                        @item.Price.ToString("c")
+                                    </span>
+                                    <span class="fw-bold text-success">
+                                        @( (item.Price - (item.Price * (decimal)item.Discount / 100)).ToString("c") )
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="fw-bold text-success">@item.Price.ToString("c")</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
